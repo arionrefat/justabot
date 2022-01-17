@@ -1,0 +1,8 @@
+{
+    "name": "justabot",
+    "version": "0.0.1",
+    "dependencies": {
+        "discord.js": "^13.6.0",
+        "ticktick-wrapper": "^0.2.0"
+    }
+}
