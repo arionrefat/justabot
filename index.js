@@ -43,10 +43,13 @@ client.on('messageCreate', (msg) => {
         }
         msg.react('❤️')
     }
-
     else if (msg.content === '!update'){
         tickticktask()
         msg.react('👍')
         msg.channel.send("Done")
+    }
+    else if (msg.content === "!info"){
+        msg.react('😘')
+        msg.channel.send("https://github.com/arionrefat/justabot")
     }
 })
