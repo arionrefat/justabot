@@ -29,7 +29,6 @@ tickticktask()
 client.on('messageCreate', (msg) => {
     if (msg.content === '!task') {
         msg.channel.sendTyping()
-
         if (titles.length == 0) msg.channel.send("No Tasks for now!")
         else{
             for (let i = 0; i < titles.length; i++) {
@@ -41,7 +40,6 @@ client.on('messageCreate', (msg) => {
                 }
             }
         }
-        msg.react('❤️')
     }
     else if (msg.content === '!update'){
         tickticktask()
