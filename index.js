@@ -36,10 +36,11 @@ client.on('messageCreate', (msg) => {
                     msg.channel.send(`${titles[i]}`)
                 }
                 else {
-                    msg.channel.send(`${titles[i]} \t\t ${dates[i].replace(/T.*/g, '')}`)
+                    msg.channel.send(`${titles[i]} \t\t ${dates[i].replace(/T.*/g, '')} \t\t ${dates[i].match(/T...../g)}+6:00`)
                 }
             }
         }
+        msg.react('🕒')
     }
     else if (msg.content === '!update'){
         tickticktask()
