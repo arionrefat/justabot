@@ -27,28 +27,83 @@ const tickticktask = async () => {
 tickticktask()
 
 client.on('messageCreate', (msg) => {
+
+    const addSix = (timeStr) => {
+        let sixthhour = 6
+        let [hours, minutes] = timeStr.split(':')
+        hours = parseInt(hours, 10)
+
+        if (hours + sixthhour == 24) {
+            hours = '00'
+        } else if (hours > 18) {
+            hours = sixthhour - (24 - hours)
+        } else {
+            hours = hours + sixthhour
+        }
+
+        return `${hours}:${minutes}`
+    }
+
+    const timeConverter = (timeStr) => {
+        let [hours, minutes] = timeStr.split(':')
+        hours = parseInt(hours, 10)
+
+        const suffix = hours >= 12 ? 'PM' : 'AM'
+        hours = ((hours + 11) % 12) + 1
+
+        return `${hours}:${minutes}${suffix}`
+    }
+
+    const timeLeft = (timeStr) => {
+        let [hours, minutes] = timeStr.split(':')
+        hours = parseInt(hours, 10)
+        minutes = parseInt(minutes, 10)
+
+        return `${24 - hours}:${60 - minutes}`
+    }
+
     if (msg.content === '!task') {
         msg.channel.sendTyping()
-        if (titles.length == 0) msg.channel.send("No Tasks for now!")
-        else{
+        if (titles.length == 0) msg.channel.send('No Tasks for now!')
+        else {
             for (let i = 0; i < titles.length; i++) {
-                if (dates[i] == null){
+                if (dates[i] == null) {
                     msg.channel.send(`${titles[i]}`)
-                }
-                else {
-                    msg.channel.send(`${titles[i]} \t\t ${dates[i].replace(/T.*/g, '')} \t\t ${dates[i].match(/T...../g)}+6:00`)
+                } else {
+                    time = dates[i].match(/T...../g)
+                    time = timeConverter(addSix(date[0].replace(/T/g, '')))
+                    msg.channel.send( `${titles[i]} \t\t ${dates[i].replace( /T.*/g, '')} \t ${time}`)
                 }
             }
         }
         msg.react('🕒')
     }
-    else if (msg.content === '!update'){
+    else if (msg.content === '!timeleft'){
+        msg.channel.sendTyping()
+        if (titles.length == 0) msg.channel.send('No Tasks for now!')
+        else {
+            for (let i = 0; i < titles.length; i++) {
+                if (dates[i] == null) {
+                    msg.channel.send(`${titles[i]}`)
+                } else {
+                    time = dates[i].match(/T...../g)
+                    let timeleft = timeLeft(addSix(time[0].replace(/T/g, '')))
+                    msg.channel.send( `${titles[i]} \t\t ${dates[i].replace( /T.*/g, '')} \t ${timeleft} hours Left`)
+                }
+            }
+        }
+        msg.react('😱')
+    }
+    else if (msg.content === '!update') {
         tickticktask()
         msg.react('👍')
-        msg.channel.send("Done")
+        msg.channel.send('Done')
     }
-    else if (msg.content === "!info"){
+    else if (msg.content === '!helprefat') {
         msg.react('😘')
-        msg.channel.send("https://github.com/arionrefat/justabot")
+        msg.channel.send('!task - show tasks')
+        msg.channel.send('!timeleft - show remaining time')
+        msg.channel.send('!update - update tasks')
+        msg.channel.send('https://github.com/arionrefat/justabot')
     }
 })
