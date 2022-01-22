@@ -27,7 +27,6 @@ const tickticktask = async () => {
 tickticktask()
 
 client.on('messageCreate', (msg) => {
-
     const addSix = (timeStr) => {
         let sixthhour = 6
         let [hours, minutes] = timeStr.split(':')
@@ -71,14 +70,13 @@ client.on('messageCreate', (msg) => {
                     msg.channel.send(`${titles[i]}`)
                 } else {
                     time = dates[i].match(/T...../g)
-                    time = timeConverter(addSix(date[0].replace(/T/g, '')))
-                    msg.channel.send( `${titles[i]} \t\t ${dates[i].replace( /T.*/g, '')} \t ${time}`)
+                    time = timeConverter(addSix(time[0].replace(/T/g, '')))
+                    msg.channel.send( `${titles[i]}\t${dates[i].replace(/T.*/g, '')}\t${time}`)
                 }
             }
         }
         msg.react('🕒')
-    }
-    else if (msg.content === '!timeleft'){
+    } else if (msg.content === '!timeleft') {
         msg.channel.sendTyping()
         if (titles.length == 0) msg.channel.send('No Tasks for now!')
         else {
@@ -86,20 +84,29 @@ client.on('messageCreate', (msg) => {
                 if (dates[i] == null) {
                     msg.channel.send(`${titles[i]}`)
                 } else {
-                    time = dates[i].match(/T...../g)
-                    let timeleft = timeLeft(addSix(time[0].replace(/T/g, '')))
-                    msg.channel.send( `${titles[i]} \t\t ${dates[i].replace( /T.*/g, '')} \t ${timeleft} hours Left`)
+                    const dateOS = new Date()
+                    let today = dateOS.getFullYear() + '-' + (dateOS.getMonth() + 1) + '-' + dateOS.getDate()
+                    todayDate = today.replace(/T.*/g, '')
+                    date = dates[i].replace(/T.*/g, '')
+                    const newdate = new Date(date)
+                    let dayleft = newdate.getDate() - dateOS.getDate()
+
+                    if (dayleft == 0) {
+                        time = dates[i].match(/T...../g)
+                        let timeleft = timeLeft( addSix(time[0].replace(/T/g, '')))
+                        msg.channel.send( `${titles[i]}\t${dates[i].replace( /T.*/g, '')}\t${timeleft} Hours left`)
+                    } else {
+                        msg.channel.send( `${titles[i]}\t${dates[i].replace( /T.*/g, '')}\t${dayleft} Days left`)
+                    }
                 }
             }
         }
         msg.react('😱')
-    }
-    else if (msg.content === '!update') {
+    } else if (msg.content === '!update') {
         tickticktask()
         msg.react('👍')
         msg.channel.send('Done')
-    }
-    else if (msg.content === '!helprefat') {
+    } else if (msg.content === '!helprefat') {
         msg.react('😘')
         msg.channel.send('!task - show tasks')
         msg.channel.send('!timeleft - show remaining time')
