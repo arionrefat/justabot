@@ -71,7 +71,7 @@ client.on('messageCreate', (msg) => {
                 } else {
                     time = dates[i].match(/T...../g)
                     time = timeConverter(addSix(time[0].replace(/T/g, '')))
-                    msg.channel.send( `${titles[i]}\t${dates[i].replace(/T.*/g, '')}\t${time}`)
+                    msg.channel.send( `${titles[i]} \t ${dates[i].replace(/T.*/g, '')} \t ${time}`)
                 }
             }
         }
@@ -94,9 +94,9 @@ client.on('messageCreate', (msg) => {
                     if (dayleft == 0) {
                         time = dates[i].match(/T...../g)
                         let timeleft = timeLeft( addSix(time[0].replace(/T/g, '')))
-                        msg.channel.send( `${titles[i]}\t${dates[i].replace( /T.*/g, '')}\t${timeleft} Hours left`)
+                        msg.channel.send( `${titles[i]} \t ${dates[i].replace( /T.*/g, '')} \t ${timeleft} Hours left`)
                     } else {
-                        msg.channel.send( `${titles[i]}\t${dates[i].replace( /T.*/g, '')}\t${dayleft} Days left`)
+                        msg.channel.send( `${titles[i]} \t ${dates[i].replace( /T.*/g, '')} \t ${dayleft} Days left`)
                     }
                 }
             }
@@ -114,3 +114,4 @@ client.on('messageCreate', (msg) => {
         msg.channel.send('https://github.com/arionrefat/justabot')
     }
 })
+
