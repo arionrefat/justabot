@@ -1,6 +1,7 @@
 const { Client, Intents } = require('discord.js')
 const { token, email, passwords } = require('./config.json')
 const ticktick = require('ticktick-wrapper')
+const moment = require('moment')
 
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
@@ -88,15 +89,16 @@ client.on('messageCreate', (msg) => {
                     let today = dateOS.getFullYear() + '-' + (dateOS.getMonth() + 1) + '-' + dateOS.getDate()
                     todayDate = today.replace(/T.*/g, '')
                     date = dates[i].replace(/T.*/g, '')
-                    const newdate = new Date(date)
-                    let dayleft = newdate.getDate() - dateOS.getDate()
+                    let a = moment(todayDate,'YYYY-M-D');
+                    let b = moment(date,'YYYY-M-D');
+                    let diffDays = b.diff(a, 'days');
 
-                    if (dayleft == 0) {
+                    if (diffDays == 0) {
                         time = dates[i].match(/T...../g)
                         let timeleft = timeLeft( addSix(time[0].replace(/T/g, '')))
                         msg.channel.send( `${titles[i]} \t ${dates[i].replace( /T.*/g, '')} \t ${timeleft} Hours left`)
                     } else {
-                        msg.channel.send( `${titles[i]} \t ${dates[i].replace( /T.*/g, '')} \t ${dayleft} Days left`)
+                        msg.channel.send( `${titles[i]} \t ${dates[i].replace( /T.*/g, '')} \t ${diffDays} Days left`)
                     }
                 }
             }
@@ -114,4 +116,3 @@ client.on('messageCreate', (msg) => {
         msg.channel.send('https://github.com/arionrefat/justabot')
     }
 })
-

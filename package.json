@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "dependencies": {
         "discord.js": "^13.6.0",
+        "moment": "^2.29.1",
         "ticktick-wrapper": "^0.2.0"
     }
 }
