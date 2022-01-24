@@ -29,8 +29,8 @@ tickticktask()
 
 client.on('messageCreate', (msg) => {
     const addSix = (timeStr) => {
-        let sixthhour = 6
-        let [hours, minutes] = timeStr.split(':')
+        const sixthhour = 6
+        const [hours, minutes] = timeStr.split(':')
         hours = parseInt(hours, 10)
 
         if (hours + sixthhour == 24) {

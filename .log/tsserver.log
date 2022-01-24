@@ -1,0 +1,23 @@
+Info 0    [19:31:48.006] Starting TS Server
+Info 1    [19:31:48.006] Version: 4.5.4
+Info 2    [19:31:48.006] Arguments: /usr/bin/node /usr/lib/node_modules/typescript/lib/tsserver.js --logFile /home/refat/Projects/justabot/.log/tsserver.log --logVerbosity info --cancellationPipeName /tmp/d8ac2e0cd802d75fb5afac2dfdcf23c6/tscancellation*
+Info 3    [19:31:48.006] Platform: linux NodeVersion: 17 CaseSensitive: true
+Info 4    [19:31:48.006] ServerMode: undefined syntaxOnly: false hasUnknownServerMode: undefined
+Info 5    [19:31:48.028] Format host information updated
+Info 6    [19:31:48.032] Search path: /home/refat/Projects/justabot
+Info 7    [19:31:48.033] For info: /home/refat/Projects/justabot/index.js :: No config files found.
+Info 8    [19:31:48.040] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 9    [19:31:50.278] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 1 structureChanged: true structureIsReused:: Not Elapsed: 2238.027663999994ms
+Info 10   [19:31:50.279] Project '/dev/null/inferredProject1*' (Inferred)
+Info 11   [19:31:50.279] 	Files (231)
+
+Info 12   [19:31:50.279] -----------------------------------------------
+Info 13   [19:31:51.322] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 14   [19:31:51.723] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 2 structureChanged: true structureIsReused:: Not Elapsed: 400.02054300002055ms
+Info 15   [19:31:51.723] Project '/dev/null/inferredProject1*' (Inferred)
+Info 16   [19:31:51.723] 	Files (294)
+
+Info 17   [19:31:51.723] -----------------------------------------------
+Info 18   [19:31:53.640] Before ensureProjectForOpenFiles:
+Info 19   [19:31:53.640] After ensureProjectForOpenFiles:
+Info 20   [19:31:53.640] got projects updated in background, updating diagnostics for /home/refat/Projects/justabot/index.js
