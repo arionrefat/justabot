@@ -1917,3 +1917,6 @@ Info 1753 [14:12:38.093] Format host information updated
 Info 1754 [14:20:00.064] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
 Info 1755 [14:20:00.116] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 241 structureChanged: false structureIsReused:: Completely Elapsed: 51.59472000040114ms
 Info 1756 [14:20:00.116] Different program with same set of files
+Info 1757 [14:24:21.929] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 1758 [14:24:21.992] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 242 structureChanged: false structureIsReused:: Completely Elapsed: 62.561933000106364ms
+Info 1759 [14:24:21.992] Different program with same set of files
