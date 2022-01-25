@@ -28,22 +28,6 @@ const tickticktask = async () => {
 tickticktask()
 
 client.on('messageCreate', (msg) => {
-    const addSix = (timeStr) => {
-        const sixthhour = 6
-        const [hours, minutes] = timeStr.split(':')
-        hours = parseInt(hours, 10)
-
-        if (hours + sixthhour == 24) {
-            hours = '00'
-        } else if (hours > 18) {
-            hours = sixthhour - (24 - hours)
-        } else {
-            hours = hours + sixthhour
-        }
-
-        return `${hours}:${minutes}`
-    }
-
     const timeConverter = (timeStr) => {
         let [hours, minutes] = timeStr.split(':')
         hours = parseInt(hours, 10)
@@ -59,7 +43,28 @@ client.on('messageCreate', (msg) => {
         hours = parseInt(hours, 10)
         minutes = parseInt(minutes, 10)
 
-        return `${24 - hours}:${60 - minutes}`
+        let time = new Date().toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: false,
+        })
+
+        let [nowHours, nowMinutes] = time.split(':')
+        nowHours = parseInt(nowHours, 10)
+        nowMinutes = parseInt(nowMinutes, 10)
+
+        let today = `${nowHours}:${nowMinutes}`
+        let like = `${hours}:${minutes}`
+        let a = moment(today, 'hh:m')
+        let b = moment(like, 'hh:m')
+        let diffHours = b.diff(a, 'hours')
+        let diffMinutes = b.diff(a, 'minutes')
+
+        if (diffHours == 0) {
+            return `${diffMinutes} ${diffMinutes == 1 ? 'Minute' : 'Minutes'}`
+        } else {
+            return `${diffHours} ${diffHours == 1 ? 'Hour' : 'Hours'}: ${diffMinutes - 60 * diffHours} ${diffMinutes == 1 ? 'Minute' : 'Minutes'}`
+        }
     }
 
     if (msg.content === '!task') {
@@ -70,9 +75,15 @@ client.on('messageCreate', (msg) => {
                 if (dates[i] == null) {
                     msg.channel.send(`${titles[i]}`)
                 } else {
-                    time = dates[i].match(/T...../g)
-                    time = timeConverter(addSix(time[0].replace(/T/g, '')))
-                    msg.channel.send( `${titles[i]} \t ${dates[i].replace(/T.*/g, '')} \t ${time}`)
+                    let date = dates[i].match(/^.................../g)
+                    date = date[0].replace(/T/g, ' ')
+                    date = moment.utc(date).format('YYYY-MM-DD HH:mm:ss');
+                    let time = moment.utc(date).toDate();
+                    time = moment(time).local().format('YYYY-MM-DD HH:mm:ss');
+                    time = time.replace(/^.........../g, '');
+                    time = timeConverter(time)
+
+                    msg.channel.send(`${titles[i]} \t ${dates[i].replace(/T.*/g, '')} \t ${time}`)
                 }
             }
         }
@@ -85,20 +96,25 @@ client.on('messageCreate', (msg) => {
                 if (dates[i] == null) {
                     msg.channel.send(`${titles[i]}`)
                 } else {
-                    const dateOS = new Date()
-                    let today = dateOS.getFullYear() + '-' + (dateOS.getMonth() + 1) + '-' + dateOS.getDate()
-                    todayDate = today.replace(/T.*/g, '')
-                    date = dates[i].replace(/T.*/g, '')
-                    let a = moment(todayDate,'YYYY-M-D');
-                    let b = moment(date,'YYYY-M-D');
-                    let diffDays = b.diff(a, 'days');
+                    let today = new Date().toLocaleDateString()
+                    let date = dates[i].replace(/T.*/g, '')
+                    let a = moment(today, 'M/DD/YYYY')
+                    let b = moment(date, 'YYYY-M-D')
+                    let diffDays = b.diff(a, 'days')
+
+                    date = dates[i].match(/^.................../g)
+                    date = date[0].replace(/T/g, ' ')
+                    date = moment.utc(date).format('YYYY-MM-DD HH:mm:ss');
+                    let time = moment.utc(date).toDate();
+                    time = moment(time).local().format('YYYY-MM-DD HH:mm:ss');
+                    time = time.replace(/^.........../g, '');
+                    time = time.match(/^...../g)
 
                     if (diffDays == 0) {
-                        time = dates[i].match(/T...../g)
-                        let timeleft = timeLeft( addSix(time[0].replace(/T/g, '')))
-                        msg.channel.send( `${titles[i]} \t ${dates[i].replace( /T.*/g, '')} \t ${timeleft} Hours left`)
+                        let timeleft = timeLeft(time[0])
+                        msg.channel.send(`${titles[i]} \t ${dates[i].replace(/T.*/g, '')} \t ${timeleft} left`)
                     } else {
-                        msg.channel.send( `${titles[i]} \t ${dates[i].replace( /T.*/g, '')} \t ${diffDays} Days left`)
+                        msg.channel.send(`${titles[i]} \t ${dates[i].replace(/T.*/g, '')} \t ${diffDays} ${diffDays == 1 ? 'Day' : 'Days'} left`)
                     }
                 }
             }
