@@ -90,6 +90,17 @@ client.on('messageCreate', (msg) => {
         msg.react('🕒')
     } else if (msg.content === '!timeleft') {
         msg.channel.sendTyping()
+
+        let todateDate = new Date().toLocaleDateString()
+
+        let timeNow = new Date().toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: false,
+        })
+
+        msg.channel.send(`Date and time today: ${todateDate} \t ${timeNow}`)
+
         if (titles.length == 0) msg.channel.send('No Tasks for now!')
         else {
             for (let i = 0; i < titles.length; i++) {
