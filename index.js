@@ -92,7 +92,7 @@ client.on('messageCreate', (msg) => {
         msg.channel.sendTyping()
 
         let todateDate = new Date().toLocaleDateString()
-        msg.channel.send(`Date and time today: ${todateDate}`)
+        msg.channel.send(`Date today: ${todateDate}`)
 
         if (titles.length == 0) msg.channel.send('No Tasks for now!')
         else {
