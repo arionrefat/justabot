@@ -25,48 +25,57 @@ const tickticktask = async () => {
     dates = tasks.map((t) => t.dueDate)
 }
 
+const timeLeft = (timeStr) => {
+    let [hours, minutes] = timeStr.split(':')
+    hours = parseInt(hours, 10)
+    minutes = parseInt(minutes, 10)
+
+    const time = new Date().toLocaleString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false,
+    })
+
+    let [nowHours, nowMinutes] = time.split(':')
+    nowHours = parseInt(nowHours, 10)
+    nowMinutes = parseInt(nowMinutes, 10)
+
+    const today = `${nowHours}:${nowMinutes}`
+    const like = `${hours}:${minutes}`
+    const a = moment(today, 'hh:m')
+    const b = moment(like, 'hh:m')
+    const diffHours = b.diff(a, 'hours')
+    const diffMinutes = b.diff(a, 'minutes')
+
+    if (diffHours == 0) {
+        return `${diffMinutes} ${diffMinutes == 1 ? 'Minute' : 'Minutes'}`
+    } else {
+        return `${diffHours} ${diffHours == 1 ? 'Hour' : 'Hours'}: ${diffMinutes - 60 * diffHours} ${diffMinutes == 1 ? 'Minute' : 'Minutes'}`
+    }
+}
+
+const timeConverter = (timeStr) => {
+    let [hours, minutes] = timeStr.split(':')
+    hours = parseInt(hours, 10)
+
+    const suffix = hours >= 12 ? 'PM' : 'AM'
+    hours = ((hours + 11) % 12) + 1
+
+    return `${hours}:${minutes}${suffix}`
+}
+
+const localtimechanger = (dateTime) => {
+    let date = dateTime.match(/^.................../g)
+    date = date[0].replace(/T/g, ' ')
+    date = moment.utc(date).format('YYYY-MM-DD HH:mm:ss');
+    let time = moment.utc(date).toDate();
+    time = moment(time).local().format('YYYY-MM-DD HH:mm:ss');
+    time = time.replace(/^.........../g, '');
+}
+
 tickticktask()
 
 client.on('messageCreate', (msg) => {
-    const timeConverter = (timeStr) => {
-        let [hours, minutes] = timeStr.split(':')
-        hours = parseInt(hours, 10)
-
-        const suffix = hours >= 12 ? 'PM' : 'AM'
-        hours = ((hours + 11) % 12) + 1
-
-        return `${hours}:${minutes}${suffix}`
-    }
-
-    const timeLeft = (timeStr) => {
-        let [hours, minutes] = timeStr.split(':')
-        hours = parseInt(hours, 10)
-        minutes = parseInt(minutes, 10)
-
-        let time = new Date().toLocaleString('en-US', {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: false,
-        })
-
-        let [nowHours, nowMinutes] = time.split(':')
-        nowHours = parseInt(nowHours, 10)
-        nowMinutes = parseInt(nowMinutes, 10)
-
-        let today = `${nowHours}:${nowMinutes}`
-        let like = `${hours}:${minutes}`
-        let a = moment(today, 'hh:m')
-        let b = moment(like, 'hh:m')
-        let diffHours = b.diff(a, 'hours')
-        let diffMinutes = b.diff(a, 'minutes')
-
-        if (diffHours == 0) {
-            return `${diffMinutes} ${diffMinutes == 1 ? 'Minute' : 'Minutes'}`
-        } else {
-            return `${diffHours} ${diffHours == 1 ? 'Hour' : 'Hours'}: ${diffMinutes - 60 * diffHours} ${diffMinutes == 1 ? 'Minute' : 'Minutes'}`
-        }
-    }
-
     if (msg.content === '!task') {
         msg.channel.sendTyping()
         if (titles.length == 0) msg.channel.send('No Tasks for now!')
@@ -75,13 +84,9 @@ client.on('messageCreate', (msg) => {
                 if (dates[i] == null) {
                     msg.channel.send(`${titles[i]}`)
                 } else {
-                    let date = dates[i].match(/^.................../g)
-                    date = date[0].replace(/T/g, ' ')
-                    date = moment.utc(date).format('YYYY-MM-DD HH:mm:ss');
-                    let time = moment.utc(date).toDate();
-                    time = moment(time).local().format('YYYY-MM-DD HH:mm:ss');
-                    time = time.replace(/^.........../g, '');
-                    time = timeConverter(time)
+                    let time = localtimechanger(dates[i])
+                    console.log(time)
+                    // time = timeConverter(time)
 
                     msg.channel.send(`${titles[i]} \t ${dates[i].replace(/T.*/g, '')} \t ${time}`)
                 }
