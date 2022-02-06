@@ -1,7 +1,12 @@
-const { Client, Intents } = require('discord.js')
-const { token, email, passwords } = require('./config.json')
-const ticktick = require('ticktick-wrapper')
-const moment = require('moment')
+import { Client, Intents } from 'discord.js'
+import ticktick from 'ticktick-wrapper'
+import moment from 'moment'
+const { utc } = moment
+import 'dotenv/config'
+
+const TOKEN = process.env.TOKEN
+const EMAIL = process.env.EMAIL
+const PASSWORD = process.env.PASSWORD
 
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
@@ -11,15 +16,19 @@ client.once('ready', () => {
     console.log('Bot Ready')
 })
 
-client.login(token)
+client.login(TOKEN)
+
+let titles = {}
+let dates = {}
 
 const tickticktask = async () => {
     await ticktick.login({
         email: {
-            username: email,
-            password: passwords,
+            username: EMAIL,
+            password: PASSWORD,
         },
     })
+
     const tasks = await ticktick.tasks.getUncompleted()
     titles = tasks.map((t) => t.title)
     dates = tasks.map((t) => t.dueDate)
@@ -41,9 +50,9 @@ const timeLeft = (timeStr) => {
     nowMinutes = parseInt(nowMinutes, 10)
 
     const today = `${nowHours}:${nowMinutes}`
-    const like = `${hours}:${minutes}`
+    const timestr = `${hours}:${minutes}`
     const a = moment(today, 'hh:m')
-    const b = moment(like, 'hh:m')
+    const b = moment(timestr, 'hh:m')
     const diffHours = b.diff(a, 'hours')
     const diffMinutes = b.diff(a, 'minutes')
 
@@ -67,10 +76,11 @@ const timeConverter = (timeStr) => {
 const localtimechanger = (dateTime) => {
     let date = dateTime.match(/^.................../g)
     date = date[0].replace(/T/g, ' ')
-    date = moment.utc(date).format('YYYY-MM-DD HH:mm:ss');
-    let time = moment.utc(date).toDate();
-    time = moment(time).local().format('YYYY-MM-DD HH:mm:ss');
-    time = time.replace(/^.........../g, '');
+    date = utc(date).format('YYYY-MM-DD HH:mm:ss')
+    let time = utc(date).toDate()
+    time = moment(time).local().format('YYYY-MM-DD HH:mm:ss')
+    time = time.replace(/^.........../g, '')
+    return time
 }
 
 tickticktask()
@@ -85,10 +95,9 @@ client.on('messageCreate', (msg) => {
                     msg.channel.send(`${titles[i]}`)
                 } else {
                     let time = localtimechanger(dates[i])
-                    console.log(time)
-                    // time = timeConverter(time)
-
-                    msg.channel.send(`${titles[i]} \t ${dates[i].replace(/T.*/g, '')} \t ${time}`)
+                    time = timeConverter(time)
+                    msg.channel.send(`${titles[i]} \t ${dates[i].replace(/T.*/g, '')} \t ${time}`
+                    )
                 }
             }
         }
@@ -110,14 +119,8 @@ client.on('messageCreate', (msg) => {
                     let a = moment(today, 'M/DD/YYYY')
                     let b = moment(date, 'YYYY-M-D')
                     let diffDays = b.diff(a, 'days')
-
-                    date = dates[i].match(/^.................../g)
-                    date = date[0].replace(/T/g, ' ')
-                    date = moment.utc(date).format('YYYY-MM-DD HH:mm:ss');
-                    let time = moment.utc(date).toDate();
-                    time = moment(time).local().format('YYYY-MM-DD HH:mm:ss');
-                    time = time.replace(/^.........../g, '');
-                    time = time.match(/^...../g)
+                    let time = localtimechanger(dates[i])
+                    time = timeConverter(time)
 
                     if (diffDays == 0) {
                         let timeleft = timeLeft(time[0])
