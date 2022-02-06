@@ -9,14 +9,10 @@
 
 1. Create an account for TickTick using Email only.
 2. Go to root folder and run `npm install`
-3. Create `config.json` file in the root directory. This is where you should put your discord 'token' and ticktick account 'email' and 'password'. The file should look like this:
+3. Create `.env` file in the root directory. This is where you should put your discord 'token' and ticktick account 'email' and 'password'. The file should look like this:
 ```
-{
-	"token": "#########################",
-    "email": "johndoe@gmail.com",
-    "passwords": "abc123"
-}
+TOKEN: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+EMAIL: XXXXXXXXX@mail.com
+PASSWORD: XXXXX
 ```
 4. Then run `node index.js` to run locally
-
-
